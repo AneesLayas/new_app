@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace 'com.adsd.maintenance'
-    compileSdkVersion 33
+    compileSdk 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

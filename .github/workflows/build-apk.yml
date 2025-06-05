@@ -21,6 +21,12 @@ jobs:
         java-version: '11'
         cache: 'gradle'
     
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 33
+        build-tools: 33.0.0
+        
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:

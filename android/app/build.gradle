@@ -26,17 +26,15 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.adsd.maintenance"
-    compileSdkVersion 34
-    ndkVersion "25.1.8937393"
+    compileSdkVersion 33
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '1.8'
     }
 
     sourceSets {
@@ -46,43 +44,17 @@ android {
     defaultConfig {
         applicationId "com.adsd.maintenance"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
-    }
-
-    signingConfigs {
-        release {
-            if (System.getenv()["ANDROID_KEYSTORE_BASE64"]) {
-                storeFile file("keystore.jks")
-                storePassword System.getenv()["ANDROID_KEYSTORE_PASSWORD"]
-                keyAlias System.getenv()["ANDROID_KEY_ALIAS"]
-                keyPassword System.getenv()["ANDROID_KEY_PASSWORD"]
-            }
-        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
             signingConfig signingConfigs.debug
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    buildFeatures {
-        buildConfig true
-    }
-
-    lintOptions {
-        checkReleaseBuilds false
-        disable 'InvalidPackage'
     }
 }
 
@@ -91,6 +63,5 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 } 

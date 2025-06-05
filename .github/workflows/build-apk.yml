@@ -1,77 +1,46 @@
-name: Build and Release APK
+name: Build Flutter APK
 
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Java 17
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
-        
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        cmdline-tools-version: '11076708'
-        accept-android-sdk-licenses: true
-        log-accepted-android-sdk-licenses: false
-        
-    - name: Install Android SDK components
-      run: |
-        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.2.9519653"
-        
+
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.32.1'
+        flutter-version: '3.19.0'
         channel: 'stable'
-        cache: true
-        
-    - name: Get Flutter dependencies
+
+    - name: Get dependencies
       run: flutter pub get
-      
-    - name: Verify Gradle wrapper
-      run: |
-        ls -la android/gradle/wrapper/
-        ls -la android/gradlew*
-        
-    - name: Make gradlew executable
-      run: chmod +x android/gradlew
-      
-    - name: Clean Flutter
-      run: flutter clean
-      
-    - name: Build APK with retry
-      run: |
-        flutter build apk --release --verbose || {
-          echo "First build attempt failed, cleaning and retrying..."
-          flutter clean
-          cd android && ./gradlew clean && cd ..
-          flutter build apk --release --verbose
-        }
-      
-    - name: List build outputs
-      run: |
-        find build -name "*.apk" -type f
-        ls -la build/app/outputs/flutter-apk/ || echo "APK directory not found"
-        
-    - name: Upload APK artifact
+
+    - name: Analyze code
+      run: flutter analyze
+
+    - name: Run tests
+      run: flutter test --no-pub
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: maintenance-app-release
-        path: build/app/outputs/flutter-apk/app-release.apk
-        retention-days: 30 
+        name: app-release.apk
+        path: build/app/outputs/flutter-apk/app-release.apk 

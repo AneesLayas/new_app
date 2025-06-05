@@ -1,146 +1,199 @@
 # ADSD Maintenance App
 
-A Flutter-based maintenance management application with offline capabilities.
+A simplified Flutter application for managing maintenance records with user authentication and basic CRUD operations.
 
 ## Features
 
-- User authentication (Admin/Technician roles)
-- Report creation and management
-- Offline support with local storage
-- Data synchronization
-- Camera and signature capture
-- Statistics dashboard
+✅ **User Authentication**
+- Login with username/password
+- User registration
+- Form validation
+- Clean, modern UI
 
-## Building the App
+✅ **Maintenance Records Management**
+- View all maintenance records
+- Add new records
+- Edit existing records
+- Delete records
+- Status tracking (Pending, In Progress, Completed)
+- Priority levels (Low, Medium, High)
+
+✅ **Modern UI/UX**
+- Material Design 3
+- Responsive layout
+- Loading states
+- Error handling
+- Confirmation dialogs
+
+## Project Structure
+
+```
+lib/
+├── main.dart                 # App entry point with login page
+├── pages/
+│   ├── homepage.dart         # Main dashboard with records list
+│   ├── registration_page.dart # User registration form
+│   ├── add_record_page.dart  # Add new maintenance record
+│   └── edit_record_page.dart # Edit existing record
+└── services/
+    ├── auth_service.dart     # Authentication logic
+    └── data_service.dart     # Data management (CRUD operations)
+```
+
+## Getting Started
 
 ### Prerequisites
+- Flutter SDK (3.19.0 or later)
+- Dart SDK
+- Android Studio / VS Code
 
-- Flutter SDK (version 3.19.0 or higher)
-- Android Studio
-- JDK 17
-- Android SDK 34
-- Git
-- Android device or emulator
+### Installation
 
-### Local Build
-
-1. Clone the repository:
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/AneesLayas/new_app.git
-   cd new_app
+   git clone <repository-url>
+   cd maintenance_app
    ```
 
-2. Install dependencies:
+2. **Install dependencies**
    ```bash
    flutter pub get
    ```
 
-3. Run the app in debug mode:
+3. **Run the app**
    ```bash
    flutter run
    ```
 
-4. Build release APK:
-   ```bash
-   flutter build apk --release
-   ```
+### Building for Production
 
-### GitHub Actions Build
+**Android APK:**
+```bash
+flutter build apk --release
+```
 
-The app is automatically built using GitHub Actions when:
-- Code is pushed to the main branch
-- A pull request is created to the main branch
-- The workflow is manually triggered
+**iOS (requires macOS):**
+```bash
+flutter build ios --release
+```
 
-### Setting up GitHub Secrets
-1. Run `setup_github_secrets.bat`
-2. Follow the instructions to add the required secrets to your GitHub repository:
-   - ANDROID_KEYSTORE_BASE64
-   - ANDROID_KEYSTORE_PASSWORD
-   - ANDROID_KEY_ALIAS
-   - ANDROID_KEY_PASSWORD
-   - ANDROID_HOME
+## Usage
 
-### Build Artifacts
-After a successful build, the APK will be available as a build artifact in the GitHub Actions run.
+### Login
+- Enter any username and password (demo mode accepts any non-empty credentials)
+- Click "Login" to access the main dashboard
+- Use "Register" link to create new accounts
+
+### Managing Records
+- **View Records**: Main dashboard shows all maintenance records
+- **Add Record**: Tap the "+" button to create new records
+- **Edit Record**: Tap on any record or use the menu to edit
+- **Delete Record**: Use the menu (⋮) to delete records
+- **Refresh**: Pull down to refresh or use the refresh button
+
+### Record Fields
+- **Equipment Name**: Name/ID of the equipment
+- **Location**: Where the equipment is located
+- **Issue Description**: Details about the maintenance issue
+- **Status**: Pending, In Progress, or Completed
+- **Priority**: Low, Medium, or High
 
 ## Development
 
-### Project Structure
-- `lib/` - Flutter source code
-- `android/` - Android-specific configurations
-- `.github/workflows/` - GitHub Actions workflows
-
-### Dependencies
-See `pubspec.yaml` for a complete list of dependencies.
-
-## Testing
-
-### Manual Testing Checklist
-
-1. Installation
-   - [ ] App installs successfully
-   - [ ] App launches without crashes
-
-2. Authentication
-   - [ ] Login works for both admin and technician roles
-   - [ ] Logout functions correctly
-   - [ ] Session persistence works
-
-3. Report Management
-   - [ ] Create new report
-   - [ ] View report list
-   - [ ] Edit existing report
-   - [ ] Delete report
-   - [ ] Search and filter reports
-
-4. Offline Features
-   - [ ] App works without internet
-   - [ ] Data syncs when connection is restored
-   - [ ] Local storage works correctly
-
-5. Media Features
-   - [ ] Camera capture works
-   - [ ] Signature capture works
-   - [ ] Image preview works
-
-### Automated Testing
-
-Run the test suite:
+### Running Tests
 ```bash
 flutter test
 ```
 
-## Troubleshooting
+### Code Analysis
+```bash
+flutter analyze
+```
 
-### Common Build Issues
-1. **Gradle Build Fails**
-   - Clean the project: `flutter clean`
-   - Delete build folder: `rm -rf build/`
-   - Update dependencies: `flutter pub upgrade`
+### CI/CD
+The project includes GitHub Actions workflow for:
+- Code analysis
+- Running tests
+- Building APK
+- Artifact upload
 
-2. **Signing Issues**
-   - Verify keystore configuration
-   - Check GitHub secrets are properly set
+## Architecture
 
-3. **SDK Issues**
-   - Verify Android SDK installation
-   - Check ANDROID_HOME environment variable
+This app follows a simplified architecture pattern:
 
-### Getting Help
-If you encounter any issues:
-1. Check the GitHub Actions logs
-2. Verify all secrets are properly configured
-3. Ensure local builds work before pushing
+- **Pages**: UI screens and user interactions
+- **Services**: Business logic and data management
+- **Models**: Data structures (currently using Map<String, dynamic> for simplicity)
+
+### Key Design Decisions
+
+1. **Simplified Structure**: Removed complex database integrations, offline sync, and advanced features to focus on core functionality
+2. **Demo Data**: Uses in-memory data storage for demonstration purposes
+3. **Material Design 3**: Modern, clean UI following Google's design guidelines
+4. **Form Validation**: Comprehensive input validation and error handling
+5. **Responsive Design**: Works on different screen sizes
+
+## Customization
+
+### Adding Real Backend
+To connect to a real backend:
+
+1. Update `auth_service.dart` to call your authentication API
+2. Update `data_service.dart` to call your CRUD APIs
+3. Add proper error handling and network connectivity checks
+4. Consider adding offline storage with SQLite
+
+### Styling
+- Colors and themes are defined in `main.dart`
+- Individual page styling can be customized in respective page files
+- Uses Material Design 3 color scheme
+
+### Adding Features
+The modular structure makes it easy to add:
+- Image attachments
+- User roles and permissions
+- Advanced filtering and search
+- Notifications
+- Reports and analytics
+
+## Dependencies
+
+```yaml
+dependencies:
+  flutter: sdk
+  cupertino_icons: ^1.0.2
+  shared_preferences: ^2.2.2
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  http: ^1.1.0
+  connectivity_plus: ^5.0.2
+  image_picker: ^1.0.4
+  signature: ^5.4.1
+  path_provider: ^2.1.1
+  intl: ^0.18.1
+  uuid: ^4.2.1
+```
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass
+6. Submit a pull request
 
 ## License
 
-This project is proprietary and confidential. 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For questions or issues:
+1. Check the GitHub Issues page
+2. Create a new issue with detailed description
+3. Include steps to reproduce any bugs
+
+---
+
+**Note**: This is a simplified demonstration app. For production use, implement proper authentication, data persistence, and security measures. 

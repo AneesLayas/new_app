@@ -57,12 +57,7 @@ jobs:
     - name: Build APK
       run: |
         flutter config --android-sdk $ANDROID_HOME
-        echo "org.gradle.jvmargs=-Xmx1536M" > android/gradle.properties
-        echo "android.useAndroidX=true" >> android/gradle.properties
-        echo "android.enableJetifier=true" >> android/gradle.properties
-        echo "android.defaults.buildfeatures.buildconfig=true" >> android/gradle.properties
-        echo "android.nonTransitiveRClass=false" >> android/gradle.properties
-        echo "android.nonFinalResIds=false" >> android/gradle.properties
+        printf "org.gradle.jvmargs=-Xmx1536M\nandroid.useAndroidX=true\nandroid.enableJetifier=true\nandroid.defaults.buildfeatures.buildconfig=true\nandroid.nonTransitiveRClass=false\nandroid.nonFinalResIds=false" > android/gradle.properties
         cat android/gradle.properties
         flutter build apk --release
     

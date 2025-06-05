@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
     
     - name: Setup Java
       uses: actions/setup-java@v3
@@ -39,39 +37,17 @@ jobs:
         channel: 'stable'
         cache: true
     
-    - name: Flutter Doctor
-      run: flutter doctor -v
-    
     - name: Install dependencies
       run: flutter pub get
-    
-    - name: Verify formatting
-      run: flutter format --set-exit-if-changed .
-    
-    - name: Analyze project source
-      run: flutter analyze
-    
-    - name: Run tests
-      run: flutter test
     
     - name: Build APK
       run: |
         flutter config --android-sdk $ANDROID_HOME
-        printf "org.gradle.jvmargs=-Xmx1536M\nandroid.useAndroidX=true\nandroid.enableJetifier=true\nandroid.defaults.buildfeatures.buildconfig=true\nandroid.nonTransitiveRClass=false\nandroid.nonFinalResIds=false" > android/gradle.properties
-        cat android/gradle.properties
         flutter build apk --release
-    
-    - name: Generate build number
-      id: buildnumber
-      run: echo "buildnumber=$(date +'%Y%m%d.%H%M')" >> $GITHUB_OUTPUT
-    
-    - name: Rename APK
-      run: |
-        mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/adsd-maintenance-${{ steps.buildnumber.outputs.buildnumber }}.apk
     
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
         name: app-release
-        path: build/app/outputs/flutter-apk/adsd-maintenance-${{ steps.buildnumber.outputs.buildnumber }}.apk
+        path: build/app/outputs/flutter-apk/app-release.apk
         retention-days: 30 

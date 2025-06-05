@@ -11,6 +11,7 @@ jobs:
   build:
     name: Build APK
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
     - name: Checkout code
@@ -31,12 +32,12 @@ jobs:
         
     - name: Install Android SDK components
       run: |
-        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.2.9519653"
         
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.19.0'
+        flutter-version: '3.32.1'
         channel: 'stable'
         cache: true
         
@@ -54,8 +55,14 @@ jobs:
     - name: Clean Flutter
       run: flutter clean
       
-    - name: Build APK
-      run: flutter build apk --release --verbose
+    - name: Build APK with retry
+      run: |
+        flutter build apk --release --verbose || {
+          echo "First build attempt failed, cleaning and retrying..."
+          flutter clean
+          cd android && ./gradlew clean && cd ..
+          flutter build apk --release --verbose
+        }
       
     - name: List build outputs
       run: |

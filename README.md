@@ -16,7 +16,9 @@ A Flutter-based maintenance management application with offline capabilities.
 ### Prerequisites
 
 - Flutter SDK (version 3.19.0 or higher)
-- Android Studio / VS Code
+- Android Studio
+- JDK 17
+- Android SDK 34
 - Git
 - Android device or emulator
 
@@ -47,13 +49,30 @@ A Flutter-based maintenance management application with offline capabilities.
 
 The app is automatically built using GitHub Actions when:
 - Code is pushed to the main branch
-- A pull request is created
-- Manually triggered from the Actions tab
+- A pull request is created to the main branch
+- The workflow is manually triggered
 
-To download the latest build:
-1. Go to the [Actions](https://github.com/AneesLayas/new_app/actions) tab
-2. Select the latest successful workflow run
-3. Download the APK from the artifacts section
+### Setting up GitHub Secrets
+1. Run `setup_github_secrets.bat`
+2. Follow the instructions to add the required secrets to your GitHub repository:
+   - ANDROID_KEYSTORE_BASE64
+   - ANDROID_KEYSTORE_PASSWORD
+   - ANDROID_KEY_ALIAS
+   - ANDROID_KEY_PASSWORD
+   - ANDROID_HOME
+
+### Build Artifacts
+After a successful build, the APK will be available as a build artifact in the GitHub Actions run.
+
+## Development
+
+### Project Structure
+- `lib/` - Flutter source code
+- `android/` - Android-specific configurations
+- `.github/workflows/` - GitHub Actions workflows
+
+### Dependencies
+See `pubspec.yaml` for a complete list of dependencies.
 
 ## Testing
 
@@ -94,22 +113,25 @@ flutter test
 
 ## Troubleshooting
 
-1. Build Issues
-   ```bash
-   flutter clean
-   flutter pub get
-   flutter run
-   ```
+### Common Build Issues
+1. **Gradle Build Fails**
+   - Clean the project: `flutter clean`
+   - Delete build folder: `rm -rf build/`
+   - Update dependencies: `flutter pub upgrade`
 
-2. Sync Issues
-   - Check internet connection
-   - Verify API server is running
-   - Clear app data and cache
+2. **Signing Issues**
+   - Verify keystore configuration
+   - Check GitHub secrets are properly set
 
-3. Installation Issues
-   - Enable "Install from Unknown Sources"
-   - Check device compatibility
-   - Verify APK signature
+3. **SDK Issues**
+   - Verify Android SDK installation
+   - Check ANDROID_HOME environment variable
+
+### Getting Help
+If you encounter any issues:
+1. Check the GitHub Actions logs
+2. Verify all secrets are properly configured
+3. Ensure local builds work before pushing
 
 ## Contributing
 

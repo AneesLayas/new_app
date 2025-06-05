@@ -49,9 +49,15 @@ jobs:
       run: flutter clean
     
     - name: Build APK
+      env:
+        ANDROID_HOME: ${{ secrets.ANDROID_HOME }}
+        GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true"
       run: |
         flutter config --android-sdk $ANDROID_HOME
-        flutter build apk --release
+        cd android
+        ./gradlew clean
+        cd ..
+        flutter build apk --release --verbose
     
     - name: Upload APK
       uses: actions/upload-artifact@v3

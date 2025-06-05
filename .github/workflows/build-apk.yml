@@ -23,6 +23,9 @@ jobs:
         java-version: '11'
         cache: 'gradle'
     
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
@@ -43,7 +46,9 @@ jobs:
       run: flutter test
     
     - name: Build APK
-      run: flutter build apk --release
+      run: |
+        flutter config --android-sdk $ANDROID_HOME
+        flutter build apk --release
     
     - name: Generate build number
       id: buildnumber

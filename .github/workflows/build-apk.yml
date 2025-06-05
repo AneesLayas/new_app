@@ -57,7 +57,7 @@ jobs:
     - name: Build APK
       run: |
         flutter config --android-sdk $ANDROID_HOME
-        echo "android.enableJetifier=true" > android/gradle.properties
+        cat android/gradle.properties
         flutter build apk --release
     
     - name: Generate build number

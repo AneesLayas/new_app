@@ -1,5 +1,5 @@
 name: adsd_maintenance
-description: ADSD Maintenance App with offline capabilities
+description: A simple maintenance app
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,16 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  shared_preferences: ^2.2.2
-  sqflite: ^2.3.0
-  path: ^1.8.3
-  http: ^1.1.0
-  connectivity_plus: ^5.0.2
-  image_picker: ^1.0.4
-  signature: ^5.4.1
-  path_provider: ^2.1.1
-  intl: ^0.18.1
-  uuid: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +17,4 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/
-    - assets/icons/ 
+  uses-material-design: true 

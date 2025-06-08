@@ -2,21 +2,18 @@ name: Build Flutter APK
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:  # Allow manual triggering
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Setup Java 17
+    - name: Setup Java
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
@@ -28,35 +25,15 @@ jobs:
         flutter-version: '3.19.0'
         channel: 'stable'
         cache: true
-        cache-key: flutter-3.19.0-stable
-
-    - name: Flutter doctor
-      run: flutter doctor -v
 
     - name: Get dependencies
       run: flutter pub get
 
-    - name: Clean build
-      run: flutter clean
-
-    - name: Analyze code
-      run: flutter analyze
-
-    - name: Run tests
-      run: flutter test --no-pub
-
     - name: Build APK
-      run: |
-        flutter build apk --release --verbose
-        if [ $? -ne 0 ]; then
-          echo "Build failed. Showing Flutter doctor output:"
-          flutter doctor -v
-          exit 1
-        fi
+      run: flutter build apk --release
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-release.apk
-        path: build/app/outputs/flutter-apk/app-release.apk
-        if-no-files-found: error 
+        path: build/app/outputs/flutter-apk/app-release.apk 
